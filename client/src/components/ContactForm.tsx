@@ -21,22 +21,46 @@ export default function ContactForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    console.log("Form submitted:", formData);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setTimeout(() => {
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Mensagem enviada!",
+          description: data.message || "Entraremos em contato em breve.",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          phone: "",
+          message: "",
+        });
+      } else {
+        toast({
+          title: "Erro ao enviar",
+          description: "Por favor, tente novamente mais tarde.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
       toast({
-        title: "Mensagem enviada!",
-        description: "Entraremos em contato em breve.",
+        title: "Erro ao enviar",
+        description: "Verifique sua conexão e tente novamente.",
+        variant: "destructive",
       });
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        message: "",
-      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (

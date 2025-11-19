@@ -9,14 +9,41 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Newsletter signup:", email);
-    toast({
-      title: "Inscrição realizada!",
-      description: "Você receberá nossas novidades em breve.",
-    });
-    setEmail("");
+    
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Inscrição realizada!",
+          description: data.message || "Você receberá nossas novidades em breve.",
+        });
+        setEmail("");
+      } else {
+        toast({
+          title: "Erro na inscrição",
+          description: "Por favor, tente novamente.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting newsletter:', error);
+      toast({
+        title: "Erro na inscrição",
+        description: "Verifique sua conexão e tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
