@@ -1,0 +1,787 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowRight, 
+  BarChart3, 
+  Zap, 
+  Users, 
+  Globe, 
+  CheckCircle2, 
+  TrendingUp, 
+  Menu, 
+  X, 
+  ArrowUpRight,
+  Layers,
+  Target,
+  Lightbulb,
+  Handshake,
+  Award,
+  BookOpen,
+  UserCheck,
+  Briefcase,
+  Quote,
+  Clock,
+  Rocket,
+  Box,
+  Lock,
+  Search,
+  Settings,
+  Sparkles
+} from 'lucide-react';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+
+/**
+ * Ivox Scale - Multi-Page High Performance Landing Page
+ * - REVERTED TO STATE: "Tire o efeito de luminescencia dos botões brancos"
+ * - Neural Hero removed.
+ * - Iridescent Blobs restored.
+ * - White buttons have no glow (before:hidden).
+ */
+
+// --- Utility Functions ---
+
+// Simple implementation of cn (classnames)
+function cn(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
+// --- Global Styles Injection (Simulating globals.css and tailwind.config extension) ---
+const GlobalStyles = () => (
+  <style>{`
+    :root {
+      --color-1: 0 100% 63%;
+      --color-2: 270 100% 63%;
+      --color-3: 210 100% 63%;
+      --color-4: 195 100% 63%;
+      --color-5: 90 100% 63%;
+      --speed: 2s;
+    }
+    
+    @keyframes rainbow {
+      0% { background-position: 0%; }
+      100% { background-position: 200%; }
+    }
+    
+    .animate-rainbow {
+      animation: rainbow var(--speed, 2s) infinite linear;
+    }
+  `}</style>
+);
+
+const NoiseOverlay = () => (
+  <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.04] mix-blend-overlay" 
+       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+  />
+);
+
+// Elemento visual Iridescente (Abstract 3D Glass)
+const IridescentBlob = ({ className = '', style = {} }) => (
+  <div className={`absolute pointer-events-none mix-blend-screen filter blur-[80px] opacity-60 ${className}`} style={style}>
+    <div className="w-full h-full rounded-full bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 animate-pulse duration-[5000ms]"></div>
+  </div>
+);
+
+// --- Rainbow Button Component ---
+
+function RainbowButton({
+  children,
+  className,
+  to,
+  ...props
+}) {
+  // Logic to handle both Link (if 'to' prop exists) and Button
+  const Component = to ? Link : 'button';
+  const linkProps = to ? { to } : {};
+
+  return (
+    <Component
+      className={cn(
+        "group relative inline-flex h-11 animate-rainbow cursor-pointer items-center justify-center rounded-xl border-0 bg-[length:200%] px-8 py-2 font-medium text-white transition-colors [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:calc(0.08*1rem)_solid_transparent] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+
+        // before styles (glow effect)
+        "before:absolute before:bottom-[-20%] before:left-1/2 before:z-0 before:h-1/5 before:w-3/5 before:-translate-x-1/2 before:animate-rainbow before:bg-[linear-gradient(90deg,hsl(var(--color-1)),hsl(var(--color-5)),hsl(var(--color-3)),hsl(var(--color-4)),hsl(var(--color-2)))] before:bg-[length:200%] before:[filter:blur(calc(0.8*1rem))]",
+
+        // light/dark mode colors (Using dark mode style as primary for this dark theme site)
+        "bg-[linear-gradient(#121213,#121213),linear-gradient(#121213_50%,rgba(18,18,19,0.6)_80%,rgba(18,18,19,0)),linear-gradient(90deg,hsl(var(--color-1)),hsl(var(--color-5)),hsl(var(--color-3)),hsl(var(--color-4)),hsl(var(--color-2)))]",
+
+        className
+      )}
+      {...linkProps}
+      {...props}
+    >
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
+    </Component>
+  );
+}
+
+// --- Glowing Effect Components (Aceternity UI Adaptation) ---
+
+const GlowingEffect = ({
+  spread = 40,
+  glow = true,
+  disabled = false,
+  proximity = 64,
+  inactiveZone = 0.01,
+  borderWidth = 3,
+}) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!ref.current || disabled) return;
+
+    const rect = ref.current.parentElement?.getBoundingClientRect();
+    if (rect) {
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setPosition({ x, y });
+
+      const center = { x: rect.width / 2, y: rect.height / 2 };
+      const distanceFromCenter = Math.hypot(x - center.x, y - center.y);
+      const maxDistance = Math.hypot(center.x, center.y);
+      
+      // Simple proximity logic for demo purposes
+      setOpacity(1);
+    }
+  }, [disabled]);
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+  };
+
+  useEffect(() => {
+    const parent = ref.current?.parentElement;
+    if (!parent) return;
+
+    parent.addEventListener('mousemove', handleMouseMove);
+    parent.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      parent.removeEventListener('mousemove', handleMouseMove);
+      parent.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [handleMouseMove]);
+
+  return (
+    <div
+      ref={ref}
+      className="pointer-events-none absolute inset-0 rounded-[inherit]"
+      style={{
+        opacity: glow ? opacity : 0,
+        transition: 'opacity 0.3s ease',
+      }}
+    >
+      <div
+        className="absolute inset-0 rounded-[inherit]"
+        style={{
+          background: `radial-gradient(${spread * 3}px circle at ${position.x}px ${position.y}px, rgba(255,255,255,0.15), transparent 100%)`,
+        }}
+      />
+      <div
+        className="absolute inset-0 rounded-[inherit]"
+        style={{
+          borderWidth: borderWidth,
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          maskImage: `radial-gradient(${spread * 2}px circle at ${position.x}px ${position.y}px, black 0%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(${spread * 2}px circle at ${position.x}px ${position.y}px, black 0%, transparent 100%)`,
+          maskComposite: 'intersect',
+          WebkitMaskComposite: 'source-in',
+        }}
+      >
+        <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-r from-cyan-500 via-purple-500 to-blue-500 opacity-50" />
+      </div>
+    </div>
+  );
+};
+
+const GridItem = ({ area, icon, title, description }) => {
+  return (
+    <li className={cn("min-h-[14rem] list-none", area)}>
+      <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-white/10 p-2 md:rounded-[1.5rem] md:p-3 group transition-all hover:bg-white/5">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+          borderWidth={2}
+        />
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-white/5 bg-black/40 backdrop-blur-sm p-6 shadow-sm md:p-6 transition-colors">
+          <div className="relative flex flex-1 flex-col justify-between gap-3">
+            <div className="w-fit rounded-lg border-[0.75px] border-white/10 bg-white/5 p-2 text-white">
+              {icon}
+            </div>
+            <div className="space-y-3">
+              <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-white">
+                {title}
+              </h3>
+              <h2 className="font-sans text-sm leading-[1.125rem] md:text-base md:leading-[1.375rem] text-zinc-400">
+                {description}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+const EcossistemaGrid = () => {
+  return (
+    <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+      <GridItem
+        area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
+        icon={<TrendingUp className="h-4 w-4" />}
+        title="Tráfego & Performance"
+        description="Aquisição de clientes com precisão cirúrgica. Otimização baseada em dados reais."
+      />
+      <GridItem
+        area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
+        icon={<Settings className="h-4 w-4" />}
+        title="Automação Inteligente"
+        description="Seu negócio vendendo 24/7 com CRMs e fluxos que nunca dormem."
+      />
+      <GridItem
+        area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
+        icon={<Lock className="h-4 w-4" />}
+        title="Segurança de Dados"
+        description="Conformidade total com LGPD e proteção dos seus ativos digitais."
+      />
+      <GridItem
+        area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
+        icon={<Sparkles className="h-4 w-4" />}
+        title="Growth Hacking"
+        description="Experimentos rápidos para encontrar as alavancas de crescimento exponencial."
+      />
+      <GridItem
+        area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
+        icon={<Search className="h-4 w-4" />}
+        title="B.I. & Analytics"
+        description="Dashboards em tempo real. Transformamos números complexos em decisões óbvias."
+      />
+    </ul>
+  );
+};
+
+// --- Shared Layout Components ---
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: 'Metodologia', path: '/metodologia' },
+    { name: 'Serviços', path: '/servicos' },
+    { name: 'Cases', path: '/cases' },
+    { name: 'Sobre', path: '/sobre' },
+  ];
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 py-4' : 'bg-transparent py-6'}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+            <div className="w-4 h-4 bg-black rounded-sm rotate-45"></div>
+          </div>
+          <span className="text-xl font-bold tracking-tight text-white">Ivox Scale</span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link key={item.name} to={item.path} className={`text-sm font-medium transition-colors relative ${location.pathname === item.path ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
+              {item.name}
+              {location.pathname === item.path && (
+                <motion.div layoutId="underline" className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-cyan-500 to-purple-500" />
+              )}
+            </Link>
+          ))}
+          {/* Using RainbowButton here as requested */}
+          <RainbowButton className="h-9 px-5 py-1 text-xs rounded-lg">
+            Agendar Diagnóstico
+          </RainbowButton>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white p-2">
+          {isOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="absolute top-full left-0 w-full bg-zinc-950/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
+          >
+            <div className="p-6 flex flex-col gap-4">
+              {navItems.map((item) => (
+                <Link key={item.name} to={item.path} onClick={() => setIsOpen(false)} className="text-lg font-medium text-zinc-300 block py-2 border-b border-white/5">
+                  {item.name}
+                </Link>
+              ))}
+              <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-lg mt-4">
+                Começar Agora
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Footer = () => (
+  <footer className="bg-black border-t border-white/10 py-12 px-6 relative overflow-hidden">
+    <IridescentBlob className="bottom-0 left-0 w-96 h-96 opacity-20 translate-y-1/2 -translate-x-1/2" />
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 bg-zinc-800 rounded-sm rotate-45"></div>
+        <span className="text-lg font-bold text-white">Ivox Scale</span>
+      </div>
+      
+      <div className="flex gap-8 text-sm text-zinc-400">
+        <Link to="/termos" className="hover:text-white transition-colors">Termos</Link>
+        <Link to="/privacidade" className="hover:text-white transition-colors">Privacidade</Link>
+        <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+        <a href="#" className="hover:text-white transition-colors">Instagram</a>
+      </div>
+      
+      <div className="text-sm text-zinc-600">
+        © 2024 Ivox Scale. All rights reserved.
+      </div>
+    </div>
+  </footer>
+);
+
+const CTA = () => (
+  <section className="py-32 px-6 relative overflow-hidden">
+    <div className="absolute inset-0 bg-black"></div>
+    <IridescentBlob className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] opacity-20" />
+    
+    <div className="relative z-10 max-w-4xl mx-auto text-center bg-zinc-900/40 backdrop-blur-2xl border border-white/10 p-12 md:p-20 rounded-[3rem] shadow-2xl shadow-purple-900/20">
+      <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">
+        Pronto para escalar?
+      </h2>
+      <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto">
+        Não aceitamos todos os projetos. Agende uma sessão estratégica para vermos se a Ivox Scale é o parceiro ideal para o seu momento.
+      </p>
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+        {/* Button 1: Agendar Sessão Estratégica (Dark) */}
+        <RainbowButton className="w-full sm:w-auto h-14 text-lg rounded-full">
+          Agendar Sessão Estratégica <ArrowUpRight className="w-5 h-5" />
+        </RainbowButton>
+
+        {/* Button 2: Falar no WhatsApp (Light/White Version) - Glow removed with before:hidden */}
+        <RainbowButton className="w-full sm:w-auto h-14 text-lg rounded-full !text-black before:hidden bg-[linear-gradient(#fff,#fff),linear-gradient(#fff_50%,rgba(255,255,255,0.6)_80%,rgba(0,0,0,0)),linear-gradient(90deg,hsl(var(--color-1)),hsl(var(--color-5)),hsl(var(--color-3)),hsl(var(--color-4)),hsl(var(--color-2)))]">
+           Falar no WhatsApp
+        </RainbowButton>
+      </div>
+      <p className="mt-6 text-sm text-zinc-600">
+        *Vagas limitadas para o próximo trimestre.
+      </p>
+    </div>
+  </section>
+);
+
+const PageHeader = ({ title, subtitle, children }) => (
+  <section className="relative pt-40 pb-20 px-6 text-center bg-zinc-950 overflow-hidden min-h-[60vh] flex flex-col justify-center">
+    {/* Background Iridescent Elements */}
+    <IridescentBlob className="top-0 left-1/4 w-[500px] h-[500px] -translate-y-1/2 opacity-40" />
+    <IridescentBlob className="bottom-0 right-1/4 w-[600px] h-[600px] translate-y-1/3 opacity-30" style={{ background: 'linear-gradient(to bottom left, #8a2be2, #0000ff)' }} />
+
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="max-w-5xl mx-auto space-y-8 relative z-10"
+    >
+      <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white leading-[1.1] drop-shadow-2xl">
+        {title}
+      </h1>
+      <p className="text-lg md:text-2xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light">
+        {subtitle}
+      </p>
+      {children}
+    </motion.div>
+  </section>
+);
+
+// --- Sub-Page Components ---
+
+const Metodologia = () => (
+  <>
+    <PageHeader 
+      title="Nossa Metodologia" 
+      subtitle="Um sistema comprovado para acelerar seu crescimento digital de forma previsível e escalável."
+    />
+    <section className="py-24 bg-black px-6 relative">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { icon: <BookOpen />, title: "Pesquisa & Análise", desc: "Mergulhamos nos dados do seu mercado para encontrar oportunidades ocultas." },
+            { icon: <Lightbulb />, title: "Estratégia", desc: "Desenho tático de aquisição personalizado para o seu modelo de negócio." },
+            { icon: <Layers />, title: "Execução Integrada", desc: "Tráfego, CRM e Vendas operando em sintonia perfeita." },
+            { icon: <BarChart3 />, title: "Otimização", desc: "Ciclos rápidos de melhoria baseados em ROAS e LTV." },
+            { icon: <Handshake />, title: "Parceria", desc: "Atuamos como sócios de crescimento, não apenas fornecedores." },
+            { icon: <Award />, title: "Resultados", desc: "Foco total em métricas que colocam dinheiro no caixa." },
+          ].map((item, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-zinc-900/30 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-white/30 hover:bg-white/5 transition-all group relative overflow-hidden"
+            >
+               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300">
+                {React.cloneElement(item.icon, { size: 24 })}
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
+              <p className="text-zinc-400 leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <CTA />
+  </>
+);
+
+const Servicos = () => (
+  <>
+    <PageHeader 
+      title="Nossos Serviços" 
+      subtitle="Soluções end-to-end para dominar seu nicho."
+    />
+    <section className="py-24 bg-black px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 gap-12">
+        {[
+          { 
+            title: "Tráfego Pago Avançado", 
+            desc: "Gestão de mídia de alta performance focada em conversão direta.",
+            tags: ["Meta Ads", "Google Ads", "TikTok", "Native"],
+            color: "from-blue-500 to-cyan-500"
+          },
+          { 
+            title: "Automação de Vendas (CRM)", 
+            desc: "Implementação de máquinas de vendas que funcionam 24/7.",
+            tags: ["HubSpot", "Salesforce", "ActiveCampaign", "Zenvia"],
+            color: "from-purple-500 to-pink-500"
+          },
+          { 
+            title: "Growth & Data Intelligence", 
+            desc: "Dashboards customizados para visualização clara de KPIs.",
+            tags: ["Looker Studio", "Power BI", "GA4", "BigQuery"],
+            color: "from-orange-500 to-red-500"
+          }
+        ].map((service, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row gap-8 bg-zinc-900/30 border border-white/10 rounded-3xl p-8 md:p-12 backdrop-blur-md relative overflow-hidden"
+          >
+            <div className={`absolute top-0 left-0 w-2 h-full bg-gradient-to-b ${service.color}`}></div>
+            <div className="flex-1 z-10">
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">{service.title}</h3>
+              <p className="text-xl text-zinc-400 mb-8 max-w-2xl">{service.desc}</p>
+              <div className="flex flex-wrap gap-3">
+                {service.tags.map(tag => (
+                  <span key={tag} className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-zinc-300 text-sm font-medium">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="md:w-1/3 relative min-h-[200px] rounded-2xl overflow-hidden bg-black/50 flex items-center justify-center border border-white/5">
+               {/* Abstract decoration for service image */}
+               <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20 blur-xl`}></div>
+               <TrendingUp className="relative text-white/20 w-32 h-32" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+    <CTA />
+  </>
+);
+
+const Cases = () => (
+  <>
+    <PageHeader 
+      title="Cases de Sucesso" 
+      subtitle="Resultados reais. Sem promessas vazias."
+    />
+    <section className="py-24 bg-black px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {[
+          { 
+            client: "EdTech Leader", 
+            stat: "+300%",
+            label: "Crescimento de Receita",
+            desc: "Reestruturação completa do funil de vendas e implementação de automação de e-mail.",
+            tags: ["Educação", "Scale-up"]
+          },
+          { 
+            client: "Fintech B2B", 
+            stat: "R$ 12M",
+            label: "Em Pipeline Gerado",
+            desc: "Estratégia de Account-Based Marketing (ABM) para grandes contas corporativas.",
+            tags: ["Finanças", "B2B"]
+          },
+          { 
+            client: "E-commerce Moda", 
+            stat: "8.5x",
+            label: "ROAS Médio",
+            desc: "Otimização de catálogo dinâmico e campanhas de retenção via WhatsApp.",
+            tags: ["Varejo", "DTC"]
+          },
+          { 
+            client: "SaaS Logística", 
+            stat: "-45%",
+            label: "Redução de CAC",
+            desc: "Refinamento de público-alvo e criativos focados em dores operacionais.",
+            tags: ["Logística", "SaaS"]
+          }
+        ].map((c, i) => (
+          <motion.div 
+            key={i}
+            whileHover={{ scale: 1.02 }}
+            className="bg-zinc-900/40 border border-white/10 rounded-[2rem] p-8 md:p-12 relative overflow-hidden group"
+          >
+            {/* Iridescent Card Background */}
+            <div className="absolute -right-20 -top-20 w-60 h-60 bg-purple-500/20 rounded-full blur-[60px] group-hover:bg-purple-500/30 transition-all"></div>
+            
+            <div className="relative z-10">
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <h4 className="text-zinc-400 text-sm uppercase tracking-widest mb-1">{c.client}</h4>
+                  <h3 className="text-5xl font-bold text-white tracking-tighter">{c.stat}</h3>
+                  <p className="text-blue-400 font-medium">{c.label}</p>
+                </div>
+                <div className="bg-white/10 p-3 rounded-full text-white">
+                  <ArrowUpRight />
+                </div>
+              </div>
+              <p className="text-zinc-300 text-lg leading-relaxed mb-6">
+                {c.desc}
+              </p>
+              <div className="flex gap-2">
+                {c.tags.map(t => (
+                  <span key={t} className="text-xs font-bold text-zinc-500 uppercase border border-zinc-800 px-2 py-1 rounded bg-black/20">{t}</span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+    <CTA />
+  </>
+);
+
+const Sobre = () => (
+  <>
+    <PageHeader 
+      title="Sobre a Ivox" 
+      subtitle="Nascemos da frustração com agências que não entregam. Somos o parceiro que gostaríamos de ter contratado."
+    />
+    <section className="py-20 bg-black px-6 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto text-center relative z-10">
+         <Quote className="w-16 h-16 text-white/20 mx-auto mb-8" />
+         <p className="text-2xl md:text-4xl font-medium text-white leading-relaxed mb-12">
+           "O mercado digital está cheio de gurus e promessas mágicas. A Ivox Scale é o antídoto: <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">ciência, processo e trabalho duro</span>."
+         </p>
+         <div className="flex items-center justify-center gap-4">
+            <div className="w-16 h-16 bg-zinc-800 rounded-full overflow-hidden border-2 border-white/20">
+               {/* Placeholder for founder image */}
+               <UserCheck className="w-full h-full p-3 text-zinc-500" />
+            </div>
+            <div className="text-left">
+               <h4 className="text-white font-bold">Alexandre Silva</h4>
+               <p className="text-zinc-500 text-sm">CEO & Founder</p>
+            </div>
+         </div>
+      </div>
+    </section>
+
+    <section className="py-24 bg-zinc-950 px-6 border-t border-white/5">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+           {[
+             { icon: <Rocket />, title: "Missão", text: "Democratizar o acesso a estratégias de escala de classe mundial." },
+             { icon: <Target />, title: "Visão", text: "Ser a principal referência em growth hacking B2B do Brasil até 2026." },
+             { icon: <Users />, title: "Valores", text: "Transparência radical, orientação a dados e obsessão pelo cliente." }
+           ].map((item, i) => (
+             <div key={i} className="p-8 rounded-2xl bg-white/5 border border-white/5">
+                <div className="w-12 h-12 mx-auto bg-black rounded-lg flex items-center justify-center text-white mb-4 border border-white/10">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-zinc-400">{item.text}</p>
+             </div>
+           ))}
+        </div>
+      </div>
+    </section>
+    <CTA />
+  </>
+);
+
+// --- Main Page Component (Home) ---
+
+const Home = () => (
+  <>
+    <section className="relative min-h-screen flex flex-col justify-center items-center px-6 pt-20 overflow-hidden">
+      {/* Hero Background with Iridescent Blobs */}
+      <IridescentBlob className="top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-30" />
+      <IridescentBlob className="bottom-0 left-0 w-[600px] h-[600px] opacity-20 bg-gradient-to-tr from-blue-600 to-purple-900" />
+      <IridescentBlob className="top-20 right-0 w-[400px] h-[400px] opacity-20 bg-gradient-to-bl from-cyan-400 to-emerald-600" />
+
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-center max-w-5xl mx-auto space-y-8 relative z-10"
+      >
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-cyan-300 mb-4 backdrop-blur-md shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(0,255,255,0.8)]"></span>
+          Assessoria de Escala Premium
+        </div>
+        
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-[1.1] mix-blend-normal">
+          Escale seu negócio <br/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 via-white to-zinc-400 drop-shadow-sm">sem improvisos.</span>
+        </h1>
+
+        <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          Transformamos empresas digitais em máquinas de vendas previsíveis com estratégias validadas e estética impecável.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+          {/* Button 3: Escalar Agora (Dark) */}
+          <RainbowButton to="/metodologia" className="h-14 text-lg px-8 rounded-full">
+            Escalar Agora <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </RainbowButton>
+          
+          {/* Button 4: Ver Nossos Cases (Light/White Version) - Glow removed with before:hidden */}
+          <RainbowButton to="/cases" className="h-14 text-lg px-8 rounded-full !text-black before:hidden bg-[linear-gradient(#fff,#fff),linear-gradient(#fff_50%,rgba(255,255,255,0.6)_80%,rgba(0,0,0,0)),linear-gradient(90deg,hsl(var(--color-1)),hsl(var(--color-5)),hsl(var(--color-3)),hsl(var(--color-4)),hsl(var(--color-2)))]">
+            Ver Nossos Cases
+          </RainbowButton>
+        </div>
+      </motion.div>
+
+      {/* Stats Strip */}
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 border-t border-white/10 pt-10 w-full max-w-6xl bg-black/20 backdrop-blur-sm rounded-2xl p-6"
+      >
+        {[
+          { label: "Receita Gerada", value: "+R$ 45M" },
+          { label: "Empresas Escaladas", value: "120+" },
+          { label: "ROI Médio", value: "6.5x" },
+          { label: "Retenção", value: "94%" },
+        ].map((stat, i) => (
+          <div key={i} className="text-center border-r border-white/5 last:border-0">
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.value}</h3>
+            <p className="text-sm text-zinc-500 uppercase tracking-wider font-semibold">{stat.label}</p>
+          </div>
+        ))}
+      </motion.div>
+    </section>
+
+    <section className="py-24 px-6 bg-zinc-950 relative">
+      <div className="max-w-7xl mx-auto mb-16 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">O Ecossistema Ivox</h2>
+        <p className="text-zinc-400 max-w-xl mx-auto">Uma abordagem holística para o crescimento.</p>
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        {/* Replaced static grid with new Glowing Grid */}
+        <EcossistemaGrid />
+      </div>
+    </section>
+    
+    <section className="py-24 bg-black relative overflow-hidden">
+       <div className="max-w-7xl mx-auto px-6">
+         <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Processo <br/> <span className="text-zinc-600">Validado.</span>
+            </h2>
+            <Link to="/metodologia" className="hidden md:flex items-center gap-2 text-white hover:text-blue-400 transition-colors pb-2 border-b border-white/20">
+               Ver metodologia completa <ArrowRight className="w-4 h-4" />
+            </Link>
+         </div>
+         
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[
+               { num: "01", title: "Diagnóstico", text: "Raio-X do negócio." },
+               { num: "02", title: "Plano", text: "Estratégia sob medida." },
+               { num: "03", title: "Setup", text: "Implementação técnica." },
+               { num: "04", title: "Escala", text: "Otimização e crescimento." },
+            ].map((step, i) => (
+               <div key={i} className="p-6 border-t border-white/20 hover:border-white/60 transition-colors group cursor-default">
+                  <span className="text-xs font-mono text-zinc-500 mb-4 block group-hover:text-blue-400 transition-colors">FASE {step.num}</span>
+                  <h4 className="text-2xl font-bold text-white mb-2">{step.title}</h4>
+                  <p className="text-zinc-400 text-sm">{step.text}</p>
+               </div>
+            ))}
+         </div>
+       </div>
+    </section>
+
+    <CTA />
+  </>
+);
+
+// --- App Component ---
+
+const App = () => {
+  return (
+    <Router>
+      <ScrollToTop />
+      <GlobalStyles />
+      <div className="bg-black min-h-screen font-sans selection:bg-purple-500/30 selection:text-white overflow-x-hidden">
+        <NoiseOverlay />
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/metodologia" element={<Metodologia />} />
+            <Route path="/servicos" element={<Servicos />} />
+            <Route path="/cases" element={<Cases />} />
+            <Route path="/sobre" element={<Sobre />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  );
+};
+
+export default App;
