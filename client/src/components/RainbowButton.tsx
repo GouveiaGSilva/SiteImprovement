@@ -22,7 +22,7 @@ export default function RainbowButton({
 
   const content = (
     <>
-      <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#4ade80_0%,#10b981_50%,#4ade80_100%)]" />
+
       <span className="inline-flex h-full w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-background px-6 py-3 text-sm backdrop-blur-3xl transition-all duration-200 hover:bg-background/80">
         {children}
       </span>
