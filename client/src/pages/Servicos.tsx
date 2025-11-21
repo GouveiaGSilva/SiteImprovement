@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import FeatureCard from "@/components/FeatureCard";
 import RainbowButton from "@/components/RainbowButton";
-import { 
-  TrendingUp, 
-  Zap, 
-  Lock, 
-  Sparkles, 
-  Search, 
+import {
+  TrendingUp,
+  Zap,
+  Lock,
+  Sparkles,
+  Search,
   Target,
   Settings,
   BarChart3,
@@ -129,8 +129,7 @@ export default function Servicos() {
 
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-32 pb-20 px-6">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-        <IridescentBlob className="w-[400px] h-[400px] bottom-20 -right-20" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -215,7 +214,7 @@ export default function Servicos() {
 
       {/* Additional Services */}
       <section className="py-32 px-6 bg-white/[0.02] relative">
-        <IridescentBlob className="w-[400px] h-[400px] top-20 right-0 opacity-30" />
+
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -251,7 +250,7 @@ export default function Servicos() {
 
       {/* CTA Section */}
       <section className="py-32 px-6 relative">
-        <IridescentBlob className="w-[600px] h-[600px] top-0 left-1/2 -translate-x-1/2" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

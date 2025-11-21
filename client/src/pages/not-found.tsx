@@ -1,15 +1,14 @@
 import { Link } from "wouter";
 import { Home as HomeIcon, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import RainbowButton from "@/components/RainbowButton";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-background overflow-hidden relative">
-      <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-      <IridescentBlob className="w-[400px] h-[400px] bottom-20 -right-20" />
-      
+
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -27,7 +26,7 @@ export default function NotFound() {
         <p className="text-xl text-zinc-400 mb-12 max-w-md mx-auto">
           Ops! Parece que você se perdeu. A página que você está procurando não existe.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <RainbowButton to="/">
             <HomeIcon className="w-5 h-5" />

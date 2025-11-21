@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import GlowingCard from "@/components/GlowingCard";
 import ContactForm from "@/components/ContactForm";
 import RainbowButton from "@/components/RainbowButton";
@@ -82,8 +82,7 @@ export default function Sobre() {
 
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-32 pb-20 px-6">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-        <IridescentBlob className="w-[400px] h-[400px] bottom-20 -right-20" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -98,7 +97,7 @@ export default function Sobre() {
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-zinc-300 max-w-3xl mx-auto leading-relaxed">
-            Somos uma agência de growth hacking e marketing digital obcecada por resultados. 
+            Somos uma agência de growth hacking e marketing digital obcecada por resultados.
             Transformamos empresas ambiciosas em máquinas de crescimento exponencial.
           </p>
         </motion.div>
@@ -151,7 +150,7 @@ export default function Sobre() {
 
       {/* Values Section */}
       <section className="py-32 px-6 bg-white/[0.02] relative">
-        <IridescentBlob className="w-[400px] h-[400px] top-20 right-0 opacity-30" />
+
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -249,7 +248,7 @@ export default function Sobre() {
 
       {/* Contact Section */}
       <section className="py-32 px-6 bg-white/[0.02] relative">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 left-0 opacity-20" />
+
 
         <div className="max-w-4xl mx-auto relative z-10">
           <motion.div
@@ -275,7 +274,7 @@ export default function Sobre() {
 
       {/* Final CTA */}
       <section className="py-32 px-6 relative">
-        <IridescentBlob className="w-[600px] h-[600px] top-0 left-1/2 -translate-x-1/2" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

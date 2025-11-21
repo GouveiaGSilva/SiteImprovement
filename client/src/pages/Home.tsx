@@ -7,7 +7,7 @@ import FeatureCard from "@/components/FeatureCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import { FAQList } from "@/components/FAQItem";
 import CaseCard from "@/components/CaseCard";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import RainbowButton from "@/components/RainbowButton";
 import { Button } from "@/components/ui/button";
 
@@ -138,9 +138,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20 pb-32 px-6">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-        <IridescentBlob className="w-[400px] h-[400px] bottom-40 -right-20" />
-        <IridescentBlob className="w-[300px] h-[300px] top-1/2 right-1/3 opacity-40" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -283,7 +281,7 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="py-32 px-6 relative">
-        <IridescentBlob className="w-[400px] h-[400px] top-20 right-0 opacity-30" />
+
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -348,7 +346,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-32 px-6 relative">
-        <IridescentBlob className="w-[600px] h-[600px] top-0 left-1/2 -translate-x-1/2" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -366,7 +364,7 @@ export default function Home() {
           <RainbowButton className="text-lg px-10 h-14">
             Agendar Diagnóstico Gratuito <ArrowRight className="w-5 h-5" />
           </RainbowButton>
-          
+
           <p className="text-sm text-zinc-500 mt-8">
             ⚡ Sem compromisso • Análise personalizada • Resultados garantidos
           </p>

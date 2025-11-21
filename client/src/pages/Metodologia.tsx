@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import GlowingCard from "@/components/GlowingCard";
 import { Search, Lightbulb, Rocket, BarChart3, ArrowRight } from "lucide-react";
 import RainbowButton from "@/components/RainbowButton";
@@ -91,8 +91,7 @@ export default function Metodologia() {
 
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-32 pb-20 px-6">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-        <IridescentBlob className="w-[400px] h-[400px] bottom-20 -right-20" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -123,9 +122,8 @@ export default function Metodologia() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2, duration: 0.8 }}
-                className={`flex flex-col ${
-                  index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-                } gap-12 items-center`}
+                className={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                  } gap-12 items-center`}
               >
                 <div className="flex-1">
                   <div className="text-6xl md:text-8xl font-bold text-white/5 mb-4">
@@ -170,7 +168,7 @@ export default function Metodologia() {
 
       {/* Principles Section */}
       <section className="py-32 px-6 bg-white/[0.02] relative">
-        <IridescentBlob className="w-[400px] h-[400px] top-20 right-0 opacity-30" />
+
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -213,7 +211,7 @@ export default function Metodologia() {
 
       {/* CTA Section */}
       <section className="py-32 px-6 relative">
-        <IridescentBlob className="w-[600px] h-[600px] top-0 left-1/2 -translate-x-1/2" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

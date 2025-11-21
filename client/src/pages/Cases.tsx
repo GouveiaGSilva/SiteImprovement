@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import IridescentBlob from "@/components/IridescentBlob";
+
 import CaseCard from "@/components/CaseCard";
 import { Badge } from "@/components/ui/badge";
 import RainbowButton from "@/components/RainbowButton";
@@ -126,8 +126,7 @@ export default function Cases() {
 
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-32 pb-20 px-6">
-        <IridescentBlob className="w-[500px] h-[500px] top-20 -left-40" />
-        <IridescentBlob className="w-[400px] h-[400px] bottom-20 -right-20" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -155,11 +154,10 @@ export default function Cases() {
               <Badge
                 key={category}
                 variant={selectedCategory === category ? "default" : "secondary"}
-                className={`cursor-pointer px-6 py-2 text-sm transition-all hover-elevate ${
-                  selectedCategory === category
+                className={`cursor-pointer px-6 py-2 text-sm transition-all hover-elevate ${selectedCategory === category
                     ? "bg-primary text-primary-foreground"
                     : "bg-white/5 text-zinc-400 hover:text-white"
-                }`}
+                  }`}
                 onClick={() => setSelectedCategory(category)}
                 data-testid={`filter-${category.toLowerCase()}`}
               >
@@ -206,7 +204,7 @@ export default function Cases() {
 
       {/* CTA Section */}
       <section className="py-32 px-6 bg-white/[0.02] relative">
-        <IridescentBlob className="w-[600px] h-[600px] top-0 left-1/2 -translate-x-1/2" />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
