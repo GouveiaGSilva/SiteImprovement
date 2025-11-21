@@ -17,7 +17,7 @@ export default function IridescentBlob({ className, style }: IridescentBlobProps
         ...style,
       }}
     >
-      <div className="w-full h-full rounded-full bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500" />
+      <div className="w-full h-full rounded-full bg-gradient-to-tr from-emerald-500 via-green-500 to-teal-500" />
     </div>
   );
 }

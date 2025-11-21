@@ -100,15 +100,14 @@ export default function Metodologia() {
           transition={{ duration: 0.8 }}
           className="relative z-10 max-w-4xl mx-auto text-center"
         >
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            Nossa{" "}
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Metodologia
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight leading-tight">
+            Nossa Metodologia:{" "}
+            <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+              Ciência para Escalar
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-zinc-300 max-w-3xl mx-auto leading-relaxed">
-            Um processo comprovado e testado por mais de 150 empresas. 
-            Da análise à escala, tudo baseado em dados e resultados reais.
+          <p className="text-xl md:text-2xl text-zinc-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Nosso processo é uma fusão de análise de dados profunda, experimentação ágil e otimização contínua para garantir resultados exponenciais.
           </p>
         </motion.div>
       </section>
