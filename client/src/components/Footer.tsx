@@ -11,7 +11,7 @@ export default function Footer() {
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch('/api/newsletter', {
         method: 'POST',
@@ -206,12 +206,12 @@ export default function Footer() {
             © 2025 Ivox Scale. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+            <Link to="/legal" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
               Privacidade
-            </a>
-            <a href="#" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+            </Link>
+            <Link to="/legal" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
               Termos de Uso
-            </a>
+            </Link>
             <a href="#" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
               Cookies
             </a>

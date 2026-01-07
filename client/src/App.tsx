@@ -10,6 +10,7 @@ import Metodologia from "@/pages/Metodologia";
 import Servicos from "@/pages/Servicos";
 import Cases from "@/pages/Cases";
 import Sobre from "@/pages/Sobre";
+import Legal from "@/pages/Legal";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/servicos" component={Servicos} />
         <Route path="/cases" component={Cases} />
         <Route path="/sobre" component={Sobre} />
+        <Route path="/legal" component={Legal} />
         <Route component={NotFound} />
       </Switch>
     </>
